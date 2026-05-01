@@ -11,10 +11,12 @@ import BlogSection from "./sections/BlogSection";
 import LearnSection from "./sections/LearnSection";
 import ContactSection from "./sections/ContactSection";
 import AdminPanel from "./pages/AdminPanel";
+import AdminLogin from "./components/AdminLogin"; // Import the new design
 
 export default function App() {
   const [showLoading, setShowLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(isAdminLoggedIn());
+  const [showLoginModal, setShowLoginModal] = useState(false); // Controls the login UI
 
   useEffect(() => {
     const checkAdmin = () => setIsAdmin(isAdminLoggedIn());
@@ -22,6 +24,7 @@ export default function App() {
     return () => window.removeEventListener("storage", checkAdmin);
   }, []);
 
+  // 1. If successfully logged in, show the Admin Dashboard
   if (isAdmin) {
     return <AdminPanel onLogout={() => setIsAdmin(false)} />;
   }
@@ -29,6 +32,17 @@ export default function App() {
   return (
     <>
       {showLoading && <LoadingScreen onDone={() => setShowLoading(false)} />}
+
+      {/* 2. Show the professional Login Page if requested */}
+      {showLoginModal && (
+        <AdminLogin
+          setIsAdmin={(val) => {
+            setIsAdmin(val);
+            setShowLoginModal(false);
+          }}
+        />
+      )}
+
       <div className="bg-gray-950 text-white overflow-hidden">
         <style>{`
           .scroll-reveal {
@@ -43,7 +57,9 @@ export default function App() {
             }
           }
         `}</style>
+
         <Navbar />
+
         <main className="pt-16">
           <HeroSection />
           <AboutSection />
@@ -65,6 +81,7 @@ export default function App() {
                   Building the digital future, one line at a time.
                 </p>
               </div>
+
               <div>
                 <p className="text-white text-sm font-semibold mb-3">
                   Quick Links
@@ -86,6 +103,7 @@ export default function App() {
                   ))}
                 </ul>
               </div>
+
               <div>
                 <p className="text-white text-sm font-semibold mb-3">Company</p>
                 <ul className="space-y-2 text-sm text-gray-400">
@@ -123,25 +141,19 @@ export default function App() {
                   </li>
                 </ul>
               </div>
+
               <div>
                 <p className="text-white text-sm font-semibold mb-3">Admin</p>
+                {/* 3. Footer button now triggers the new Login Modal instead of prompt */}
                 <button
-                  onClick={() => {
-                    const u = prompt("Username:");
-                    const p = prompt("Password:");
-                    if (u === "Kenny" && p === "1234richard") {
-                      localStorage.setItem("nev_admin_auth", "true");
-                      setIsAdmin(true);
-                    } else {
-                      alert("Invalid credentials");
-                    }
-                  }}
+                  onClick={() => setShowLoginModal(true)}
                   className="text-sm text-gray-400 hover:text-cyan-400 transition-colors"
                 >
                   Admin Login
                 </button>
               </div>
             </div>
+
             <div className="pt-8 border-t border-white/10 text-center text-sm text-gray-500">
               <p>&copy; 2026 New Era Ventures. All rights reserved.</p>
             </div>
