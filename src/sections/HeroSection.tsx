@@ -1,7 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Play } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Play } from "lucide-react";
 
-const HERO_WORDS = ['INNOVATIVE', 'VISIONARY', 'DIGITAL', 'TRANSFORMATIVE', 'FUTURE-DRIVEN'];
+const HERO_WORDS = [
+  "INNOVATIVE",
+  "VISIONARY",
+  "DIGITAL",
+  "TRANSFORMATIVE",
+  "FUTURE-DRIVEN",
+];
 
 export default function HeroSection() {
   const [wordIndex, setWordIndex] = useState(0);
@@ -27,12 +33,12 @@ export default function HeroSection() {
       const y = progress * 60;
       imageRef.current.style.transform = `translateY(${y}px) scale(1.08)`;
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollTo = (id: string) => {
-    document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -42,7 +48,10 @@ export default function HeroSection() {
     >
       {/* Parallax background image */}
       <div className="absolute inset-0 overflow-hidden">
-        <div ref={imageRef} className="absolute inset-0 transition-none will-change-transform">
+        <div
+          ref={imageRef}
+          className="absolute inset-0 transition-none will-change-transform"
+        >
           <img
             src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600"
             alt="Team collaborating"
@@ -71,8 +80,8 @@ export default function HeroSection() {
         ))}
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+      {/* Content - Shifted to the left */}
+      <div className="relative z-10 w-full ml-0 px-8 sm:px-12 lg:px-16 pt-20 pb-16">
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-400 text-sm font-medium mb-6 backdrop-blur-sm">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
@@ -88,10 +97,12 @@ export default function HeroSection() {
 
           <div className="h-14 flex items-center mb-6">
             <span className="text-2xl sm:text-3xl font-bold text-gray-300">
-              WE ARE A{' '}
+              WE ARE A{" "}
               <span
                 className={`text-cyan-400 inline-block transition-all duration-400 ${
-                  visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'
+                  visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 -translate-y-3"
                 }`}
               >
                 {HERO_WORDS[wordIndex]}
@@ -100,21 +111,24 @@ export default function HeroSection() {
           </div>
 
           <p className="text-lg text-gray-400 leading-relaxed mb-10 max-w-xl">
-            Tech company shaping the digital landscape with world-class web development,
-            mobile apps, graphic design, and code education. We do not just build products —
-            we build legacies.
+            Tech company shaping the digital landscape with world-class web
+            development, mobile apps, graphic design, and code education. We do
+            not just build products — we build legacies.
           </p>
 
           <div className="flex flex-wrap gap-4">
             <button
-              onClick={() => scrollTo('#services')}
+              onClick={() => scrollTo("#services")}
               className="group flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300 hover:-translate-y-1"
             >
               Explore Our Work
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight
+                size={18}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </button>
             <button
-              onClick={() => scrollTo('#learn')}
+              onClick={() => scrollTo("#learn")}
               className="group flex items-center gap-2 px-7 py-3.5 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1"
             >
               <Play size={18} className="text-cyan-400" />
@@ -125,13 +139,15 @@ export default function HeroSection() {
           {/* Stats */}
           <div className="mt-16 flex flex-wrap gap-8">
             {[
-              { value: '200+', label: 'Students Trained' },
-              { value: '50+', label: 'Projects Shipped' },
-              { value: '5+', label: 'Years Experience' },
-              { value: '98%', label: 'Client Satisfaction' },
+              { value: "200+", label: "Students Trained" },
+              { value: "50+", label: "Projects Shipped" },
+              { value: "5+", label: "Years Experience" },
+              { value: "98%", label: "Client Satisfaction" },
             ].map((stat) => (
               <div key={stat.label}>
-                <div className="text-3xl font-black text-white">{stat.value}</div>
+                <div className="text-3xl font-black text-white">
+                  {stat.value}
+                </div>
                 <div className="text-sm text-gray-500 mt-0.5">{stat.label}</div>
               </div>
             ))}
