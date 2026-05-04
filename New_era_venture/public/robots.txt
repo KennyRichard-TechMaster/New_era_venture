@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://new-eraventures.com/sitemap.xml
