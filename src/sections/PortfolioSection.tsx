@@ -274,9 +274,9 @@ export default function PortfolioSection() {
             Meet the Core
           </span>
           <h2 className="text-4xl sm:text-6xl font-black text-white leading-tight">
-            The{" "}
+            MEET{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-              Family
+              THE TEAM
             </span>
           </h2>
           <p className="mt-6 text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
