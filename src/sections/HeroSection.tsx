@@ -8,6 +8,7 @@ import {
   TrendingUp,
   Cloud,
 } from "lucide-react";
+import logoImage from "../../logo.png";
 
 const FONT_LINK_ID = "hero-font-link";
 const FONT_HREF =
@@ -560,7 +561,7 @@ export default function HeroSection() {
         <div>
           <div className="hero__brand">
             <div className="hero__logo-box">
-              <img src="/logo.png" alt="New Era Ventures" />
+              <img src={logoImage} alt="New Era Ventures" />
             </div>
             <div className="hero__brand-text">
               <span className="hero__brand-name">

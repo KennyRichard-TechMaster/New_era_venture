@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Mail, Phone } from "lucide-react";
 import { isAdminLoggedIn } from "./lib/auth";
+import logoImage from "../logo.png";
 import Navbar from "./components/Navbar";
 import AIAssistant from "./components/AIAssistant";
 import AdminPanel from "./pages/AdminPanel";
@@ -53,7 +54,7 @@ export default function App() {
             <div>
               <div className="mb-4 flex items-center gap-3">
                 <img
-                  src="/logo.png"
+                  src={logoImage}
                   alt="New Era Ventures"
                   className="h-10 w-auto rounded-xl bg-white p-1.5"
                 />

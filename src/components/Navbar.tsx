@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { navItems } from "../data/siteContent";
+import logoImage from "../../logo.png";
 
 export default function Navbar() {
   const location = useLocation();
@@ -24,7 +25,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-orange-200 bg-[#fff7ed]/95 shadow-[0_8px_30px_rgba(154,52,18,0.08)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-3 rounded-2xl bg-white px-3 py-2 shadow-sm">
-          <img src="/logo.png" alt="New Era Ventures" className="h-9 w-auto" />
+          <img src={logoImage} alt="New Era Ventures" className="h-9 w-auto" />
           <div className="leading-none">
             <div className="text-base font-black uppercase tracking-[0.15em] text-slate-900">
               New Era
