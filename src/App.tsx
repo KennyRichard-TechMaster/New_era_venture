@@ -114,6 +114,7 @@ export default function App() {
                     ["Blog", "/blog"],
                     ["Learn", "/learn"],
                     ["Contact", "/contact"],
+                    ["Admin", "/admin"],
                   ] as [string, string][]
                 ).map(([label, href]) => (
                   <li key={label}>
