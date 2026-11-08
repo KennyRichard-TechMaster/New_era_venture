@@ -1,5 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Play } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  ArrowRight,
+  Globe,
+  Smartphone,
+  Palette,
+  Code2,
+  TrendingUp,
+  Cloud,
+} from "lucide-react";
+
+const FONT_LINK_ID = "hero-font-link";
+const FONT_HREF =
+  "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap";
 
 const HERO_WORDS = [
   "INNOVATIVE",
@@ -9,156 +21,671 @@ const HERO_WORDS = [
   "FUTURE-DRIVEN",
 ];
 
+const SERVICES = [
+  { icon: Globe, label: "Web Development", status: "Active" },
+  { icon: Smartphone, label: "Mobile Apps", status: "Active" },
+  { icon: Palette, label: "UI/UX & Design", status: "Active" },
+  { icon: Code2, label: "Code Education", status: "Enrolling" },
+  { icon: TrendingUp, label: "SEO & Marketing", status: "Active" },
+  { icon: Cloud, label: "Cloud & DevOps", status: "Active" },
+];
+
+const STATS = [
+  { value: "200+", label: "Students trained" },
+  { value: "50+", label: "Projects shipped" },
+  { value: "5+", label: "Years active" },
+  { value: "98%", label: "Satisfaction" },
+];
+
 export default function HeroSection() {
   const [wordIndex, setWordIndex] = useState(0);
-  const [visible, setVisible] = useState(true);
-  const imageRef = useRef<HTMLDivElement>(null);
+  const [wordVisible, setWordVisible] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [activeService, setActiveService] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVisible(false);
+    setMounted(true);
+    if (!document.getElementById(FONT_LINK_ID)) {
+      const link = document.createElement("link");
+      link.id = FONT_LINK_ID;
+      link.rel = "stylesheet";
+      link.href = FONT_HREF;
+      document.head.appendChild(link);
+    }
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setWordVisible(false);
       setTimeout(() => {
         setWordIndex((i) => (i + 1) % HERO_WORDS.length);
-        setVisible(true);
-      }, 400);
-    }, 2500);
-    return () => clearInterval(interval);
+        setWordVisible(true);
+      }, 350);
+    }, 2800);
+    return () => clearInterval(id);
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!imageRef.current) return;
-      const rect = imageRef.current.getBoundingClientRect();
-      const progress = 1 - rect.top / window.innerHeight;
-      const y = progress * 60;
-      imageRef.current.style.transform = `translateY(${y}px) scale(1.08)`;
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const id = setInterval(
+      () => setActiveService((i) => (i + 1) % SERVICES.length),
+      2200,
+    );
+    return () => clearInterval(id);
   }, []);
 
-  const scrollTo = (id: string) => {
+  const scrollTo = (id: string) =>
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center overflow-hidden bg-gray-950"
-    >
-      {/* Parallax background image */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div
-          ref={imageRef}
-          className="absolute inset-0 transition-none will-change-transform"
-        >
-          <img
-            src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600"
-            alt="Team collaborating"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-gray-950/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent" />
+    <section id="home" className="hero">
+      <style>{`
+        .hero {
+          position: relative;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+          font-family: 'Manrope','Helvetica Neue',Arial,sans-serif;
+          background: #fafafa;
+          padding: 110px 24px 56px;
+        }
+
+        .hero__field {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          overflow: hidden;
+        }
+        .hero__field::before {
+          content: "";
+          position: absolute;
+          top: -10%;
+          right: -8%;
+          width: 760px;
+          height: 760px;
+          border-radius: 50%;
+          background: radial-gradient(circle at 35% 35%, rgba(37,99,235,0.10), rgba(37,99,235,0) 70%);
+        }
+        .hero__grid-lines {
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(rgba(15,23,42,0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(15,23,42,0.035) 1px, transparent 1px);
+          background-size: 64px 64px;
+          mask-image: linear-gradient(115deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.35) 55%, transparent 85%);
+        }
+
+        .hero__inner {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          max-width: 1320px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 0.95fr 1.05fr;
+          gap: 48px;
+          align-items: center;
+          opacity: 0;
+          transform: translateY(16px);
+          transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .hero__inner.mounted {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* ---------- Left column ---------- */
+        .hero__brand {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 40px;
+        }
+        .hero__logo-box {
+          background: #ffffff;
+          border-radius: 12px;
+          padding: 6px;
+          border: 1px solid rgba(15,23,42,0.08);
+          flex-shrink: 0;
+        }
+        .hero__logo-box img {
+          height: 38px;
+          width: auto;
+          display: block;
+        }
+        .hero__brand-text {
+          display: flex;
+          flex-direction: column;
+          line-height: 1;
+        }
+        .hero__brand-name {
+          font-size: 0.92rem;
+          font-weight: 700;
+          color: #0f172a;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+        }
+        .hero__brand-rule {
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(90deg, #2563eb 0%, rgba(37,99,235,0.15) 100%);
+          margin-top: 8px;
+        }
+
+        .hero__eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 22px;
+          font-size: 0.78rem;
+          letter-spacing: 0.05em;
+        }
+        .hero__eyebrow-static {
+          color: #475569;
+          font-weight: 500;
+        }
+        .hero__eyebrow-word {
+          color: #2563eb;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          display: inline-block;
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .hero__eyebrow-word.hidden {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+
+        .hero__headline {
+          font-size: clamp(2.4rem, 4.6vw, 3.7rem);
+          font-weight: 700;
+          color: #0f172a;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          margin: 0 0 24px;
+          max-width: 580px;
+        }
+        .hero__headline em {
+          font-family: 'Fraunces', 'Georgia', serif;
+          font-style: italic;
+          font-weight: 600;
+          color: #2563eb;
+        }
+
+        .hero__body {
+          color: #475569;
+          font-size: 1.05rem;
+          line-height: 1.75;
+          max-width: 460px;
+          margin: 0 0 36px;
+        }
+
+        .hero__ctas {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-bottom: 44px;
+        }
+        .hero__btn-primary,
+        .hero__btn-secondary {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 14px 26px;
+          font-weight: 700;
+          font-size: 0.85rem;
+          letter-spacing: 0.02em;
+          border-radius: 8px;
+          cursor: pointer;
+          font-family: inherit;
+          transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+        .hero__btn-primary {
+          background: #2563eb;
+          color: #fff;
+          border: none;
+          box-shadow: 0 10px 24px rgba(37,99,235,0.28);
+        }
+        .hero__btn-primary:hover {
+          background: #1d4ed8;
+          transform: translateY(-2px);
+        }
+        .hero__btn-secondary {
+          background: transparent;
+          color: #0f172a;
+          border: 1.5px solid rgba(15,23,42,0.18);
+        }
+        .hero__btn-secondary:hover {
+          border-color: rgba(15,23,42,0.4);
+          background: rgba(15,23,42,0.03);
+          transform: translateY(-2px);
+        }
+
+        .hero__stats {
+          display: flex;
+          gap: 36px;
+          flex-wrap: wrap;
+          border-top: 1px solid rgba(15,23,42,0.08);
+          padding-top: 28px;
+        }
+        .hero__stat-value {
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #0f172a;
+          letter-spacing: -0.02em;
+          line-height: 1;
+        }
+        .hero__stat-label {
+          font-size: 0.66rem;
+          color: #64748b;
+          margin-top: 5px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+
+        /* ---------- Right column: visual composition ---------- */
+        .hero__visual {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 480px;
+        }
+
+        .hero__figure-glow {
+          position: absolute;
+        }
+
+        /* Robot overlay tweaks */
+        .hero__figure {
+          width: 320px;
+          height: 320px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(37,99,235,0.18) 0%, rgba(37,99,235,0.06) 55%, transparent 75%);
+          top: 2%;
+          left: 14%;
+          pointer-events: none;
+        }
+
+        .hero__composition {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+        }
+
+        .hero__figure {
+          position: relative;
+          z-index: 5;
+          width: 320px;
+          flex-shrink: 0;
+          margin-right: -66px;
+          margin-top: 8px;
+        }
+        .hero__figure img {
+          width: 100%;
+          display: block;
+          height: auto;
+          transform: translateY(-10px) scale(1.08);
+          transform-origin: bottom center;
+          filter: drop-shadow(6px 20px 28px rgba(15,23,42,0.22));
+          -webkit-mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
+          mask-image: linear-gradient(to bottom, black 92%, transparent 100%);
+        }
+
+        .hero__panel-wrap {
+          position: relative;
+          z-index: 2;
+          width: 420px;
+          flex-shrink: 0;
+        }
+
+        .hero__panel {
+          background: #ffffff;
+          border: 1px solid rgba(15,23,42,0.08);
+          border-radius: 16px;
+          box-shadow: 0 30px 70px rgba(15,23,42,0.10);
+          padding: 28px;
+        }
+        .hero__panel-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+        .hero__panel-eyebrow {
+          font-size: 0.66rem;
+          color: #94a3b8;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          margin-bottom: 4px;
+          font-weight: 600;
+        }
+        .hero__panel-title {
+          font-size: 1.05rem;
+          font-weight: 800;
+          color: #0f172a;
+        }
+        .hero__panel-badge {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 5px 11px;
+          background: rgba(37,99,235,0.08);
+          border-radius: 100px;
+        }
+        .hero__panel-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #2563eb;
+        }
+        .hero__panel-badge-text {
+          font-size: 0.66rem;
+          color: #2563eb;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+        }
+
+        .hero__service-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          margin-bottom: 20px;
+        }
+        .hero__service-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 11px 12px;
+          border-radius: 10px;
+          background: rgba(15,23,42,0.025);
+          border: 1px solid transparent;
+          transition: background 0.35s ease, border-color 0.35s ease;
+        }
+        .hero__service-row.active {
+          background: rgba(37,99,235,0.07);
+          border-color: rgba(37,99,235,0.22);
+        }
+        .hero__service-icon {
+          width: 30px;
+          height: 30px;
+          border-radius: 8px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(15,23,42,0.05);
+          transition: background 0.35s ease;
+        }
+        .hero__service-row.active .hero__service-icon {
+          background: rgba(37,99,235,0.14);
+        }
+        .hero__service-label {
+          flex: 1;
+          font-size: 0.82rem;
+          font-weight: 600;
+          color: #334155;
+        }
+        .hero__service-row.active .hero__service-label {
+          color: #0f172a;
+        }
+        .hero__service-status {
+          font-size: 0.64rem;
+          color: #94a3b8;
+          font-weight: 500;
+        }
+
+        .hero__panel-divider {
+          height: 1px;
+          background: rgba(15,23,42,0.07);
+          margin-bottom: 18px;
+        }
+
+        .hero__panel-stats {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+        .hero__panel-stat-value {
+          font-size: 1.1rem;
+          font-weight: 800;
+          color: #0f172a;
+          letter-spacing: -0.02em;
+          text-align: center;
+        }
+        .hero__panel-stat-label {
+          font-size: 0.6rem;
+          color: #94a3b8;
+          margin-top: 3px;
+          font-weight: 600;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          text-align: center;
+        }
+
+        .hero__panel-cta {
+          width: 100%;
+          padding: 13px;
+          background: #2563eb;
+          color: #fff;
+          font-weight: 700;
+          font-size: 0.82rem;
+          letter-spacing: 0.02em;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          font-family: inherit;
+          transition: background 0.2s ease;
+        }
+        .hero__panel-cta:hover {
+          background: #1d4ed8;
+        }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 860px) {
+          .hero {
+            padding: 96px 20px 56px;
+            min-height: auto;
+          }
+          .hero__inner {
+            grid-template-columns: 1fr;
+            gap: 36px;
+          }
+          .hero__visual {
+            min-height: 0;
+            display: block;
+          }
+          .hero__figure-glow {
+            display: none;
+          }
+          .hero__composition {
+            display: block;
+          }
+          .hero__figure {
+            width: 220px;
+            margin: 0 auto -26px;
+          }
+          .hero__panel-wrap {
+            width: 100%;
+            margin-left: 0;
+          }
+          .hero__panel {
+            padding: 22px;
+          }
+          .hero__brand {
+            margin-bottom: 28px;
+          }
+          .hero__headline {
+            font-size: clamp(1.9rem, 8vw, 2.6rem);
+            max-width: none;
+          }
+          .hero__body {
+            font-size: 0.96rem;
+            max-width: none;
+            margin-bottom: 28px;
+          }
+          .hero__ctas {
+            margin-bottom: 40px;
+          }
+          .hero__btn-primary,
+          .hero__btn-secondary {
+            flex: 1 1 auto;
+            justify-content: center;
+          }
+          .hero__stats {
+            gap: 24px;
+            justify-content: space-between;
+          }
+          .hero__stat-value {
+            font-size: 1.25rem;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .hero__stats {
+            row-gap: 18px;
+          }
+        }
+      `}</style>
+
+      <div className="hero__field">
+        <div className="hero__grid-lines" />
       </div>
 
-      {/* Animated particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-cyan-500/20 animate-pulse"
-            style={{
-              width: Math.random() * 6 + 2,
-              height: Math.random() * 6 + 2,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${Math.random() * 4 + 2}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content - Shifted to the left */}
-      <div className="relative z-10 w-full ml-0 px-8 sm:px-12 lg:px-16 pt-20 pb-16">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-400 text-sm font-medium mb-6 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            NIGERIA - UK & many more · Building the Digital Future
+      <div className={`hero__inner ${mounted ? "mounted" : ""}`}>
+        {/* Left column */}
+        <div>
+          <div className="hero__brand">
+            <div className="hero__logo-box">
+              <img src="/logo.png" alt="New Era Ventures" />
+            </div>
+            <div className="hero__brand-text">
+              <span className="hero__brand-name">
+                New&nbsp;Era&nbsp;Ventures
+              </span>
+              <span className="hero__brand-rule" />
+            </div>
           </div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] mb-4">
-            <span className="block">NEW ERA</span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-              VENTURES
+          <div className="hero__eyebrow">
+            <span className="hero__eyebrow-static">WE ARE</span>
+            <span
+              className={`hero__eyebrow-word ${wordVisible ? "" : "hidden"}`}
+            >
+              {HERO_WORDS[wordIndex]}
             </span>
+          </div>
+
+          <h1 className="hero__headline">
+            Building the <em>digital future</em>, one product at a time
           </h1>
 
-          <div className="h-14 flex items-center mb-6">
-            <span className="text-2xl sm:text-3xl font-bold text-gray-300">
-              WE ARE A{" "}
-              <span
-                className={`text-cyan-400 inline-block transition-all duration-400 ${
-                  visible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 -translate-y-3"
-                }`}
-              >
-                {HERO_WORDS[wordIndex]}
-              </span>
-            </span>
-          </div>
-
-          <p className="text-lg text-gray-400 leading-relaxed mb-10 max-w-xl">
-            Tech company shaping the digital landscape with world-class web
-            development, mobile apps, graphic design, and code education. We do
-            not just build products — we build legacies.
+          <p className="hero__body">
+            A technology company shaping the digital landscape through
+            world-class web development, mobile apps, design, and code education
+            — across Nigeria, the UK, and beyond.
           </p>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="hero__ctas">
             <button
+              className="hero__btn-primary"
               onClick={() => scrollTo("#services")}
-              className="group flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300 hover:-translate-y-1"
             >
-              Explore Our Work
-              <ArrowRight
-                size={18}
-                className="group-hover:translate-x-1 transition-transform"
-              />
+              Our Services <ArrowRight size={14} strokeWidth={2.5} />
             </button>
             <button
-              onClick={() => scrollTo("#learn")}
-              className="group flex items-center gap-2 px-7 py-3.5 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1"
+              className="hero__btn-secondary"
+              onClick={() => scrollTo("#contact")}
             >
-              <Play size={18} className="text-cyan-400" />
-              Learn to Code
+              Get In Touch
             </button>
           </div>
 
-          {/* Stats */}
-          <div className="mt-16 flex flex-wrap gap-8">
-            {[
-              { value: "200+", label: "Students Trained" },
-              { value: "50+", label: "Projects Shipped" },
-              { value: "5+", label: "Years Experience" },
-              { value: "98%", label: "Client Satisfaction" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="text-3xl font-black text-white">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-gray-500 mt-0.5">{stat.label}</div>
+          <div className="hero__stats">
+            {STATS.map((s, i) => (
+              <div key={i}>
+                <div className="hero__stat-value">{s.value}</div>
+                <div className="hero__stat-label">{s.label}</div>
               </div>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600">
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
-        <div className="w-px h-8 bg-gradient-to-b from-gray-600 to-transparent animate-bounce" />
+        {/* Right column: signature visual + services panel */}
+        <div className="hero__visual">
+          <div className="hero__figure-glow" />
+
+          <div className="hero__composition">
+            <div className="hero__figure">
+              <img
+                src="/yesgirl-removebg-preview.png"
+                alt="Woman celebrating success"
+              />
+            </div>
+
+            <div className="hero__panel-wrap">
+              <div className="hero__panel">
+                <div className="hero__panel-head">
+                  <div>
+                    <div className="hero__panel-eyebrow">What we do</div>
+                    <div className="hero__panel-title">Our Services</div>
+                  </div>
+                  <div className="hero__panel-badge">
+                    <span className="hero__panel-dot" />
+                    <span className="hero__panel-badge-text">6 ACTIVE</span>
+                  </div>
+                </div>
+
+                <div className="hero__service-list">
+                  {SERVICES.map((s, i) => {
+                    const Icon = s.icon;
+                    const isActive = i === activeService;
+                    return (
+                      <div
+                        key={i}
+                        className={`hero__service-row ${isActive ? "active" : ""}`}
+                      >
+                        <div className="hero__service-icon">
+                          <Icon
+                            size={14}
+                            color={isActive ? "#2563eb" : "#94a3b8"}
+                          />
+                        </div>
+                        <div className="hero__service-label">{s.label}</div>
+                        <div className="hero__service-status">{s.status}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="hero__panel-divider" />
+
+                <div className="hero__panel-stats">
+                  {[
+                    { value: "50+", label: "Projects" },
+                    { value: "200+", label: "Students" },
+                    { value: "98%", label: "Happy" },
+                  ].map((s, i) => (
+                    <div key={i}>
+                      <div className="hero__panel-stat-value">{s.value}</div>
+                      <div className="hero__panel-stat-label">{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  className="hero__panel-cta"
+                  onClick={() => scrollTo("#contact")}
+                >
+                  Start a Project →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

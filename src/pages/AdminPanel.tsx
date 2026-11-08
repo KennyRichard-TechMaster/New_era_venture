@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
+import { useState } from "react";
 import { adminLogout } from "../lib/auth";
 import { LogOut, Menu, X } from "lucide-react";
 import AdminDashboard from "./admin/AdminDashboard";
@@ -8,9 +7,11 @@ import AdminBlog from "./admin/AdminBlog";
 import AdminProducts from "./admin/AdminProducts";
 import AdminServices from "./admin/AdminServices";
 import AdminSettings from "./admin/AdminSettings";
+import AdminMessages from "./admin/AdminMessages";
 
 type AdminTab =
   | "dashboard"
+  | "messages"
   | "team"
   | "blog"
   | "products"
@@ -28,6 +29,7 @@ export default function AdminPanel({ onLogout }: { onLogout: () => void }) {
 
   const tabs = [
     { id: "dashboard", label: "Dashboard", icon: "📊" },
+    { id: "messages", label: "Messages", icon: "💬" },
     { id: "team", label: "Team Members", icon: "👥" },
     { id: "blog", label: "Blog Posts", icon: "📝" },
     { id: "products", label: "Products", icon: "📦" },
@@ -90,6 +92,7 @@ export default function AdminPanel({ onLogout }: { onLogout: () => void }) {
         {/* Main content */}
         <main className="flex-1 p-4 sm:p-8 overflow-auto">
           {activeTab === "dashboard" && <AdminDashboard />}
+          {activeTab === "messages" && <AdminMessages />}
           {activeTab === "team" && <AdminTeam />}
           {activeTab === "blog" && <AdminBlog />}
           {activeTab === "products" && <AdminProducts />}

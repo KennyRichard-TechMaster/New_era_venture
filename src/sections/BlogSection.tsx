@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { supabase, BlogPost } from '../lib/supabase';
-import { Calendar, User, ArrowRight, Clock } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { supabase, BlogPost } from "../lib/supabase";
+import { Calendar, User, Clock } from "lucide-react";
 
 function useScrollReveal(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
@@ -9,9 +9,12 @@ function useScrollReveal(threshold = 0.1) {
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) { el.classList.add('revealed'); obs.disconnect(); }
+        if (entry.isIntersecting) {
+          el.classList.add("revealed");
+          obs.disconnect();
+        }
       },
-      { threshold }
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -20,7 +23,7 @@ function useScrollReveal(threshold = 0.1) {
 }
 
 function readTime(content: string) {
-  const words = content.split(' ').length;
+  const words = content.split(" ").length;
   return `${Math.max(1, Math.round(words / 200))} min read`;
 }
 
@@ -32,15 +35,21 @@ export default function BlogSection() {
 
   useEffect(() => {
     supabase
-      .from('blog_posts')
-      .select('*')
-      .eq('published', true)
-      .order('published_at', { ascending: false })
-      .then(({ data }) => { if (data) setPosts(data); });
+      .from("blog_posts")
+      .select("*")
+      .eq("published", true)
+      .order("published_at", { ascending: false })
+      .then(({ data }) => {
+        if (data) setPosts(data);
+      });
   }, []);
 
   const formatDate = (d: string) =>
-    new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    new Date(d).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
 
   return (
     <section id="blog" className="py-24 bg-gray-950 relative overflow-hidden">
@@ -54,18 +63,21 @@ export default function BlogSection() {
             Insights & Stories
           </span>
           <h2 className="mt-3 text-4xl sm:text-5xl font-black text-white">
-            The{' '}
+            The{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
               Blog
             </span>
           </h2>
           <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
-            Thoughts on technology, design, education, and building things that matter —
-            from the minds behind New Era Ventures.
+            Thoughts on technology, design, education, and building things that
+            matter — from the minds behind New Era Ventures.
           </p>
         </div>
 
-        <div ref={gridRef} className="scroll-reveal grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div
+          ref={gridRef}
+          className="scroll-reveal grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6"
+        >
           {posts.map((post, i) => (
             <article
               key={post.id}
@@ -88,7 +100,9 @@ export default function BlogSection() {
                 <h3 className="text-white font-bold mb-2 line-clamp-2 group-hover:text-cyan-400 transition-colors">
                   {post.title}
                 </h3>
-                <p className="text-gray-400 text-sm line-clamp-2 mb-4">{post.excerpt}</p>
+                <p className="text-gray-400 text-sm line-clamp-2 mb-4">
+                  {post.excerpt}
+                </p>
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <div className="flex items-center gap-1">
                     <User size={11} />
@@ -101,7 +115,7 @@ export default function BlogSection() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar size={11} />
-                      {post.published_at ? formatDate(post.published_at) : ''}
+                      {post.published_at ? formatDate(post.published_at) : ""}
                     </div>
                   </div>
                 </div>
@@ -139,18 +153,26 @@ export default function BlogSection() {
               </span>
             </div>
             <div className="p-8">
-              <h2 className="text-2xl font-black text-white mb-3">{selected.title}</h2>
+              <h2 className="text-2xl font-black text-white mb-3">
+                {selected.title}
+              </h2>
               <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
-                <span className="flex items-center gap-1"><User size={13} /> {selected.author}</span>
+                <span className="flex items-center gap-1">
+                  <User size={13} /> {selected.author}
+                </span>
                 <span className="flex items-center gap-1">
                   <Calendar size={13} />
-                  {selected.published_at ? formatDate(selected.published_at) : ''}
+                  {selected.published_at
+                    ? formatDate(selected.published_at)
+                    : ""}
                 </span>
                 <span className="flex items-center gap-1">
                   <Clock size={13} /> {readTime(selected.content)}
                 </span>
               </div>
-              <p className="text-gray-300 leading-relaxed whitespace-pre-line">{selected.content}</p>
+              <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                {selected.content}
+              </p>
             </div>
           </div>
         </div>

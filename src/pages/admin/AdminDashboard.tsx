@@ -1,61 +1,66 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { useEffect, useMemo, useState } from "react";
+import { getInquiries } from "../../lib/siteStorage";
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({
-    team: 0,
-    blog: 0,
-    products: 0,
-    messages: 0,
-  });
+  const [inquiries, setInquiries] = useState(getInquiries());
 
   useEffect(() => {
-    const fetchStats = async () => {
-      const [team, blog, products, messages] = await Promise.all([
-        supabase.from('team_members').select('id', { count: 'exact' }),
-        supabase.from('blog_posts').select('id', { count: 'exact' }),
-        supabase.from('products').select('id', { count: 'exact' }),
-        supabase.from('contact_messages').select('id', { count: 'exact' }),
-      ]);
-      setStats({
-        team: team.count || 0,
-        blog: blog.count || 0,
-        products: products.count || 0,
-        messages: messages.count || 0,
-      });
-    };
-    fetchStats();
+    const sync = () => setInquiries(getInquiries());
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
   }, []);
+
+  const stats = useMemo(() => {
+    return {
+      total: inquiries.length,
+      newCount: inquiries.filter((item) => item.status === "new").length,
+      readCount: inquiries.filter((item) => item.status === "read").length,
+      repliedCount: inquiries.filter((item) => item.status === "replied")
+        .length,
+    };
+  }, [inquiries]);
+
+  const cards = [
+    { label: "Total enquiries", value: stats.total, icon: "💬" },
+    { label: "New", value: stats.newCount, icon: "✦" },
+    { label: "Read", value: stats.readCount, icon: "👀" },
+    { label: "Replied", value: stats.repliedCount, icon: "✅" },
+  ];
 
   return (
     <div>
-      <h2 className="text-3xl font-black mb-8">Dashboard</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { label: 'Team Members', value: stats.team, icon: '👥' },
-          { label: 'Blog Posts', value: stats.blog, icon: '📝' },
-          { label: 'Products', value: stats.products, icon: '📦' },
-          { label: 'Messages', value: stats.messages, icon: '💬' },
-        ].map(({ label, value, icon }) => (
+      <h2 className="mb-8 text-3xl font-black text-white">Dashboard</h2>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map(({ label, value, icon }) => (
           <div
             key={label}
-            className="p-6 bg-gray-900 border border-white/10 rounded-2xl hover:border-cyan-500/30 transition-all"
+            className="rounded-2xl border border-white/10 bg-gray-900 p-6 transition-all hover:border-cyan-500/30"
           >
-            <div className="text-3xl mb-2">{icon}</div>
-            <p className="text-gray-400 text-sm">{label}</p>
-            <p className="text-3xl font-bold text-white mt-2">{value}</p>
+            <div className="mb-2 text-3xl">{icon}</div>
+            <p className="text-sm text-gray-400">{label}</p>
+            <p className="mt-2 text-3xl font-bold text-white">{value}</p>
           </div>
         ))}
       </div>
 
-      <div className="mt-12 p-6 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 rounded-2xl">
-        <h3 className="text-xl font-bold mb-3">Quick Stats</h3>
+      <div className="mt-12 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 p-6">
+        <h3 className="mb-3 text-xl font-bold text-white">Quick overview</h3>
         <ul className="space-y-2 text-sm text-gray-300">
-          <li>✓ Website is live and fully functional</li>
-          <li>✓ All sections are managed from this admin panel</li>
-          <li>✓ Changes are reflected in real-time across the site</li>
-          <li>✓ Database is PostgreSQL via Supabase</li>
-          <li>✓ Contact form submissions tracked in database</li>
+          <li>
+            ✓ Local storage is active and secure for this client dashboard.
+          </li>
+          <li>
+            ✓ Each inquiry includes full client details, timestamp, and service
+            info.
+          </li>
+          <li>
+            ✓ Admin can mark messages as read or replied without external
+            dependencies.
+          </li>
+          <li>
+            ✓ The public site and admin panel remain fully functional for client
+            requests.
+          </li>
         </ul>
       </div>
     </div>
