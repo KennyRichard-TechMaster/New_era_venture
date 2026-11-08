@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Lock, User, ShieldCheck, Zap } from "lucide-react";
 import { useSiteSettings } from "../context/SiteContext";
+import { adminLogin } from "../lib/auth";
 
 export default function AdminLogin({
   setIsAdmin,
@@ -15,12 +16,7 @@ export default function AdminLogin({
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Your dual-credential logic
-    if (
-      (username === "Newerateam" && password === "55019") ||
-      (username === "kenny" && password === "1234richard")
-    ) {
-      localStorage.setItem("nev_admin_auth", "true");
+    if (adminLogin(username, password)) {
       setIsAdmin(true);
       setError("");
     } else {

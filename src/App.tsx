@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { Mail, Phone } from "lucide-react";
 import { isAdminLoggedIn } from "./lib/auth";
 import logoImage from "../logo.png";
 import Navbar from "./components/Navbar";
 import AIAssistant from "./components/AIAssistant";
+import AdminLogin from "./components/AdminLogin";
 import AdminPanel from "./pages/AdminPanel";
 import {
   AboutPage,
@@ -20,6 +20,7 @@ import {
 
 export default function App() {
   const [isAdmin, setIsAdmin] = useState(isAdminLoggedIn());
+  const location = useLocation();
 
   useEffect(() => {
     const checkAdmin = () => setIsAdmin(isAdminLoggedIn());
@@ -27,8 +28,12 @@ export default function App() {
     return () => window.removeEventListener("storage", checkAdmin);
   }, []);
 
-  if (isAdmin) {
-    return <AdminPanel onLogout={() => setIsAdmin(false)} />;
+  if (location.pathname === "/admin") {
+    return isAdmin ? (
+      <AdminPanel onLogout={() => setIsAdmin(false)} />
+    ) : (
+      <AdminLogin setIsAdmin={setIsAdmin} />
+    );
   }
 
   return (
