@@ -12,6 +12,7 @@ import {
   LayoutTemplate,
   TrendingUp,
 } from "lucide-react";
+import { contactDetails } from "../data/contactDetails";
 import {
   aboutValues,
   blogPosts,
@@ -879,17 +880,24 @@ export function ContactPage() {
             experience you need. We’ll help you map the right solution.
           </p>
           <div className="mt-8 space-y-5 text-slate-700">
-            <div className="flex items-center gap-3">
+            <a href={`mailto:${contactDetails.email}`} className="flex items-center gap-3 transition hover:text-orange-600">
               <Mail size={18} className="text-orange-500" />
-              hello@neweraventures.com
-            </div>
-            <div className="flex items-center gap-3">
-              <Phone size={18} className="text-orange-500" /> +234 800 000 0000
-            </div>
+              {contactDetails.email}
+            </a>
+            <a href={`tel:${contactDetails.phoneHref}`} className="flex items-center gap-3 transition hover:text-orange-600">
+              <Phone size={18} className="text-orange-500" /> {contactDetails.phoneDisplay}
+            </a>
             <div className="flex items-center gap-3">
               <MapPin size={18} className="text-orange-500" /> Nigeria • Remote
               worldwide
             </div>
+          </div>
+
+          <div className="mt-7 flex flex-wrap gap-3 text-sm font-semibold text-orange-700">
+            <a href={contactDetails.whatsappUrl} target="_blank" rel="noreferrer" className="rounded-full bg-orange-100 px-4 py-2 transition hover:bg-orange-200">WhatsApp</a>
+            <a href={contactDetails.tiktokUrl} target="_blank" rel="noreferrer" className="rounded-full bg-orange-100 px-4 py-2 transition hover:bg-orange-200">TikTok</a>
+            <a href={contactDetails.linkedinUrl} target="_blank" rel="noreferrer" className="rounded-full bg-orange-100 px-4 py-2 transition hover:bg-orange-200">LinkedIn</a>
+            <a href={contactDetails.xUrl} target="_blank" rel="noreferrer" className="rounded-full bg-orange-100 px-4 py-2 transition hover:bg-orange-200">X</a>
           </div>
 
           <div className="mt-10 rounded-[28px] border border-slate-200 bg-slate-50 p-6">

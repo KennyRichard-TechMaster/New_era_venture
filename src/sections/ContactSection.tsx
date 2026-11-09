@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { Mail, MapPin, Phone, Send, MessageSquare } from "lucide-react";
 import { useSiteSettings } from "../context/SiteContext";
+import { contactDetails } from "../data/contactDetails";
 
 function useScrollReveal<T extends HTMLElement>(threshold = 0.1) {
   const ref = useRef<T | null>(null);
@@ -99,14 +100,14 @@ export default function ContactSection() {
               {
                 icon: Mail,
                 label: "Email",
-                value: settings.contact_email || "hello@neweraventures.com",
-                href: `mailto:${settings.contact_email || "hello@neweraventures.com"}`,
+                value: contactDetails.email,
+                href: `mailto:${contactDetails.email}`,
               },
               {
                 icon: Phone,
                 label: "Phone",
-                value: settings.contact_phone || "+1 (555) 000-0000",
-                href: `tel:${settings.contact_phone || "+1 (555) 000-0000"}`,
+                value: contactDetails.phoneDisplay,
+                href: `tel:${contactDetails.phoneHref}`,
               },
               {
                 icon: MapPin,
@@ -141,10 +142,10 @@ export default function ContactSection() {
               </p>
               <div className="flex gap-2">
                 {[
-                  { label: "Twitter", url: settings.social_twitter },
-                  { label: "LinkedIn", url: settings.social_linkedin },
-                  { label: "GitHub", url: settings.social_github },
-                  { label: "Instagram", url: settings.social_instagram },
+                  { label: "WhatsApp", url: contactDetails.whatsappUrl },
+                  { label: "TikTok", url: contactDetails.tiktokUrl },
+                  { label: "LinkedIn", url: contactDetails.linkedinUrl },
+                  { label: "X", url: contactDetails.xUrl },
                 ].map(
                   ({ label, url }) =>
                     url && (

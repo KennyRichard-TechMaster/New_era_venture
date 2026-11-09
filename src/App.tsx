@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { Mail, Phone } from "lucide-react";
 import { isAdminLoggedIn } from "./lib/auth";
+import { contactDetails } from "./data/contactDetails";
 import logoImage from "../logo.png";
 import Navbar from "./components/Navbar";
 import AIAssistant from "./components/AIAssistant";
@@ -134,18 +135,24 @@ export default function App() {
                 Contact
               </h3>
               <div className="space-y-3 text-sm text-orange-100/90">
-                <a href="mailto:hello@neweraventures.com" className="flex items-center gap-2 transition hover:text-white">
-                  <Mail size={16} /> hello@neweraventures.com
+                <a href={`mailto:${contactDetails.email}`} className="flex items-center gap-2 transition hover:text-white">
+                  <Mail size={16} /> {contactDetails.email}
                 </a>
-                <a href="tel:+2348000000000" className="flex items-center gap-2 transition hover:text-white">
-                  <Phone size={16} /> +234 800 000 0000
+                <a href={`tel:${contactDetails.phoneHref}`} className="flex items-center gap-2 transition hover:text-white">
+                  <Phone size={16} /> {contactDetails.phoneDisplay}
                 </a>
                 <div className="flex items-center gap-3 pt-2">
-                  <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25" aria-label="Instagram">
-                    <img src="https://cdn.simpleicons.org/instagram/ffffff" alt="" className="h-4 w-4" />
+                  <a href={contactDetails.whatsappUrl} target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25" aria-label="WhatsApp">
+                    <img src="https://cdn.simpleicons.org/whatsapp/ffffff" alt="" className="h-4 w-4" />
                   </a>
-                  <a href="https://www.tiktok.com/" target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25" aria-label="TikTok">
+                  <a href={contactDetails.tiktokUrl} target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25" aria-label="TikTok">
                     <img src="https://cdn.simpleicons.org/tiktok/ffffff" alt="" className="h-4 w-4" />
+                  </a>
+                  <a href={contactDetails.linkedinUrl} target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25" aria-label="LinkedIn">
+                    <img src="https://cdn.simpleicons.org/linkedin/ffffff" alt="" className="h-4 w-4" />
+                  </a>
+                  <a href={contactDetails.xUrl} target="_blank" rel="noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25" aria-label="X">
+                    <img src="https://cdn.simpleicons.org/x/ffffff" alt="" className="h-4 w-4" />
                   </a>
                 </div>
               </div>

@@ -254,11 +254,11 @@ INSERT INTO site_settings (key, value) VALUES
   ('company_name', 'New Era Ventures'),
   ('company_tagline', 'Building the Future, One Line at a Time'),
   ('logo_url', ''),
-  ('contact_email', 'hello@neweraventures.com'),
-  ('contact_phone', '+1 (555) 000-0000'),
+  ('contact_email', 'Neweraventures248@gmail.com'),
+  ('contact_phone', '+234 808 521 5164'),
   ('contact_address', '123 Innovation Drive, Tech City, TC 00000'),
-  ('social_twitter', 'https://twitter.com/neweraventures'),
-  ('social_linkedin', 'https://linkedin.com/company/neweraventures'),
+  ('social_twitter', 'https://x.com/newera_ven?s=11'),
+  ('social_linkedin', 'https://www.linkedin.com/in/new-era-ventures-5145693b0?utm_source=share_via&utm_content=profile&utm_medium=member_ios'),
   ('social_github', 'https://github.com/neweraventures'),
   ('social_instagram', 'https://instagram.com/neweraventures')
 ON CONFLICT (key) DO NOTHING;

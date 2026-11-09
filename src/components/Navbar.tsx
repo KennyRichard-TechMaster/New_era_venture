@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { navItems } from "../data/siteContent";
+import { contactDetails } from "../data/contactDetails";
 import logoImage from "../../logo.png";
 
 export default function Navbar() {
@@ -54,7 +55,7 @@ export default function Navbar() {
 
         <div className="hidden items-center lg:flex">
           <a
-            href="https://wa.me/2348000000000?text=Hi%20New%20Era%20Ventures%2C%20I%27d%20like%20to%20chat!"
+            href={contactDetails.whatsappUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#25D366] shadow-md shadow-green-500/20 transition hover:-translate-y-0.5 hover:bg-[#1fbd59]"
@@ -97,7 +98,7 @@ export default function Navbar() {
 
             <div className="mt-4">
               <a
-                href="https://wa.me/2348000000000?text=Hi%20New%20Era%20Ventures%2C%20I%27d%20like%20to%20chat!"
+                href={contactDetails.whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-center text-sm font-semibold text-white"
